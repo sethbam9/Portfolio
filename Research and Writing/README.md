@@ -14,5 +14,4 @@
 
 ### HCI App Proposal - Engage the Psalms
 - **Course:** CS 201 Introduction to Human-Computer Interaction
-
 - **Summary:** A poster where I outline the major HCI components of problem formation, prototyping, and user testing for a Hebrew poetry app. 
