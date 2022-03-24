@@ -1,0 +1,307 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname |Space Game, Howell|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;This program was designed to simulate a Space Invaders style aracde game for learning the programming language Racket
+;Designed by: Josh Blank, Mike King, Seth Howell, and Zach Hochstetler
+
+     ;Data description:
+
+          ;Numbers represent coodinates and pixels
+               ;Pixels represent speed of objects
+                    ;example: measures the speed of tank, ufos, missiles, and comets
+               ;Coordinates represent locations
+                    ;example: ensures that components are in the correct location
+
+          ;Boolean represent true or false statements
+               ;example: 'grounded? u' checks if ufo is hit or not
+
+          ;Images represent the visual components of the game
+               ;examples: displays tank, ufos, missiles, comets, and background
+
+(require 2htdp/image)
+(require 2htdp/universe)
+
+(define EARTH (bitmap "background.jpg"))
+
+(define FIRE (bitmap "fire.png"))
+
+(define WIDTH-OF-WORLD 500)
+(define HEIGHT-OF-WORLD 600)
+(define BACKGROUND (place-image EARTH
+                                (/ WIDTH-OF-WORLD 2) (- HEIGHT-OF-WORLD (/ (image-height EARTH) 2))
+                                                        (rectangle WIDTH-OF-WORLD HEIGHT-OF-WORLD "solid" "black")))
+(define G.O.BACKGROUND (place-image FIRE
+  (/ WIDTH-OF-WORLD 2) (- HEIGHT-OF-WORLD (/ (image-height FIRE) 2))
+                          (place-image EARTH
+                                (/ WIDTH-OF-WORLD 2) (- HEIGHT-OF-WORLD (/ (image-height EARTH) 2))
+                                                        (rectangle WIDTH-OF-WORLD HEIGHT-OF-WORLD "solid" "black"))))
+
+(define INVADE-RATE 3)
+
+(define WHEEL (circle 10 "solid" "brown"))
+(define TANK-BODY (rectangle 50 30 "solid" "black"))
+(define SPACE (rectangle 10 5 "solid" "black"))
+(define BOTH-WHEELS (beside WHEEL SPACE WHEEL))
+(define GUN (rectangle 5 20 "solid" "gray"))
+
+(define TANK-BODY-GUN (overlay/align/offset
+         	"middle" "top"
+         	GUN
+         	0 10
+         	TANK-BODY))
+
+(define TANK (overlay/align/offset
+         	"middle" "bottom"
+         	BOTH-WHEELS
+         	0 -10
+         	TANK-BODY-GUN))
+
+
+(define UFO (bitmap "ufo.png"))
+(define MISSILE (bitmap "rocket.png"))
+(define COMET (bitmap "asteroid.png"))
+
+; tank is a struct composed of (make-tank loc(number) vel(number))
+(define-struct tank [loc vel])
+
+; ufos is a struct composed of (make-ufos x(number) y(number) vel(number))
+(define-struct ufos [x y vel])
+
+; game is a struct composed of (make-game (list of ufos) tank (list of missiles))  **ADD SCORE AS 5th COMPONENT**
+(define-struct game [ufos tank missiles comets time])
+
+; NUMBER/IMAGE -> IMAGE
+; takes background and x coordinate and places tank on background at x coordinate and then returns background
+; (define (render-tank x z))
+(define (render-tank x z)
+  (place-image TANK (tank-loc x) (- HEIGHT-OF-WORLD 25) z))
+
+; (list of structs)/IMAGE -> IMAGE
+; takes a list of structs and a background and places ufos at the cooresponding x/y positions and then return background
+; (define (render-ufos m z))
+(define (render-ufos m z)
+  (cond
+   [(empty? m) z]
+   [else (place-image UFO (ufos-x (first m)) (ufos-y (first m)) (render-ufos (rest m) z))]))
+
+; (list of structs)/IMAGE -> IMAGE
+; takes a list of structs and a background and places missiles at the cooresponding x/y positions and then return background
+; (define (render-missiles m z))
+(define (render-missiles m z) 
+  (cond
+	[(empty? m) z]
+	[else (place-image MISSILE (posn-x (first m)) (posn-y (first m)) (render-missiles (rest m) z))]))
+
+; (list of structs)/IMAGE -> IMAGE
+; takes a list of structs and a background and places comets at the cooresponding x/y positions and then returns the background
+; (define (render-comets m z))
+(define (render-comets m z)
+  (cond
+	[(empty? m) z]
+	[else (place-image COMET (posn-x (first m)) (posn-y (first m)) (render-comets (rest m) z))]))
+
+; NUM -> NUM
+; Returns time in seconds
+; (define (timeSeconds x))
+(define (timeSeconds x)
+  (cond
+    [(= (modulo x 28) 0) (/ x 28)]
+    [else (floor (/ x 28))]))
+
+; NUM -> IMAGE
+; renders time onto background
+; (define (renderTime m z))
+(define (renderTime m z)
+  (place-image (text (number->string (timeSeconds m)) 25 "white") (/ WIDTH-OF-WORLD 2) 20 z))
+
+; struct -> IMAGE
+; takes the tank, the ufos, and the missiles and places them on the background
+; (define (render t))
+(define (render t)
+ (render-tank (game-tank t) (render-ufos (game-ufos t) (render-missiles (game-missiles t)
+              (render-comets (game-comets t) (renderTime (game-time t) BACKGROUND))))))
+
+; struct/NUM -> struct
+; creates the starting coordinates for a missile based on whether or not a missile is on screen
+; (define (missilefire m x))
+(define (missilefire m x)
+  (cond
+	[(empty? m) (cons (make-posn x (- HEIGHT-OF-WORLD (image-height TANK))) empty)]
+	[else (cons (make-posn x (- HEIGHT-OF-WORLD (image-height TANK))) m)]))
+
+; struct -> struct
+; moves the tank right
+; (define (move-right t))
+(define (move-right t)
+  (make-tank (+ (tank-loc t) (tank-vel t)) (tank-vel t)))
+
+; struct -> struct
+; moves the tank left
+; (define (move-left t))
+(define (move-left t)  
+  (make-tank (- (tank-loc t) (tank-vel t)) (tank-vel t)))
+
+; struct/keyevent -> struct
+; checks whether or not a key has been hit and then updates the program accordingly
+; (define (change i a-key))
+(define (change i a-key)
+  (cond
+	[(key=? a-key "left")  (make-game (game-ufos i) (move-left (game-tank i)) (game-missiles i) (game-comets i) (game-time i))]
+	[(key=? a-key "right") (make-game (game-ufos i) (move-right (game-tank i)) (game-missiles i) (game-comets i) (game-time i))]
+	[(key=? a-key " ") (make-game (game-ufos i) (game-tank i) (missilefire (game-missiles i) (tank-loc (game-tank i))) (game-comets i) (game-time i))]
+	[else i]))
+
+; struct -> struct
+; increments a ufos x and y position
+; (define (move-ufo i))
+(define (move-ufo i)
+  (cond
+	[(< (+ (ufos-x i) (* 2 (ufos-vel i))) 0) (make-ufos 0 (+ (ufos-y i) (* 2 (ufos-vel i))) (- (ufos-vel i)))]
+	[(> (+ (ufos-x i) (* 2 (ufos-vel i))) WIDTH-OF-WORLD) (make-ufos WIDTH-OF-WORLD (+ (ufos-y i) (* 2 (ufos-vel i))) (- (ufos-vel i)))]
+	[else (make-ufos (+ (ufos-x i) (* 2 (ufos-vel i))) (+ (ufos-y i) 2) (ufos-vel i))]))
+
+; list -> list
+; goes through all of the ufos within the list and increments their coordinates
+; (define (advance-ufos i))
+(define (advance-ufos i)
+  (cond
+	[(empty? i) empty]
+	[else (cons (move-ufo (first i)) (advance-ufos (rest i)))]))
+
+; struct -> struct
+; increments missiles y position
+; (define (move-missile i))
+(define (move-missile i)
+  (make-posn (posn-x i) (- (posn-y i) 10)))
+
+; list -> list
+; goes through list of missiles and increments y coordinate
+; (define (advance-missiles i))
+(define (advance-missiles i)
+  (cond
+	[(empty? i) empty]
+	[else (if (< (posn-y (first i)) 0) (advance-missiles (rest i)) (cons (move-missile (first i)) (advance-missiles (rest i))))]))
+
+; list -> list
+; advances all comets by 5 pixels
+; (define (advance-comets i))
+(define (advance-comets i)
+  (cond
+	[(empty? i) empty]
+	[else (cons (make-posn (posn-x (first i)) (+ (posn-y (first i)) 5)) (advance-comets (rest i)))]))
+
+; NUM -> NUM
+; creates a random direction for a ufo
+; (define (random-direction i))
+(define (random-direction i)
+  (if (= (modulo (random 10) 2) 1)
+  	(- i)
+  	i))
+
+; list -> list
+; creates a ufo at a random position a small percentage of the time
+; (define (create-ufo i))
+(define (create-ufo i)
+  (cond
+	[(< (random 150) INVADE-RATE) (cons (make-ufos (random WIDTH-OF-WORLD) 0 (random-direction (random 2))) i)]
+	[else i]))
+
+; list -> list
+; creates a comet at a random position a small percentage of the time
+; (define (create-comet i))
+(define (create-comet i)
+  (cond
+	[(< (random 150) (/ INVADE-RATE 3)) (cons (make-posn (random WIDTH-OF-WORLD) 0) i)]
+	[else i]))
+
+; list list -> list
+; determines whether or not a ufo has been hit and then deletes it if so
+; (define (destroy-invaders lom loi))
+(define (destroy-invaders lom loi)
+  (cond[(empty? loi) empty]
+   	[(empty? lom) loi]
+   	[else
+    	(if (find-invader (first loi) lom)
+        	(rest loi)
+        	(cons (first loi) (destroy-invaders lom (rest loi))))]))
+
+; struct list -> BOOLEAN
+; returns true if a specific ufo has been hit and false if not
+; (define (find-invader i lom))
+(define (find-invader i lom)
+  (cond[(empty? lom) false]
+   	[else
+    	(if (and (< (- (ufos-x i) 10) (posn-x (first lom)) (+ (ufos-x i) 10))
+             	(< (- (ufos-y i) 10) (posn-y (first lom)) (+ (ufos-y i) 10)))
+        	true
+        	(find-invader i (rest lom)))]))
+
+; NUM -> NUM
+; Increments time every 1/28th of a second
+; (define (incrementTime x))
+(define (incrementTime x) (+ x 1))
+
+; struct -> struct
+; updates ufos and missiles and creates and destroys ufos
+; (define (update-game x))
+(define (update-game x)
+  (make-game (destroy-invaders (game-missiles x) (create-ufo (advance-ufos (game-ufos x))))
+         	(game-tank x) (advance-missiles (game-missiles x)) (advance-comets (create-comet (game-comets x))) (incrementTime (game-time x))))
+
+; struct list -> BOOLEAN
+; returns true if the tank has been hit by one of the falling comets
+; (define (tankHit? tank comets))
+(define (tankHit? tank comets)
+  (cond[(empty? comets) false]
+   	[else
+    	(if (and (< (- (tank-loc tank) (image-width TANK-BODY)) (posn-x (first comets)) (+ (tank-loc tank) (image-width TANK-BODY)))
+             	(< (- HEIGHT-OF-WORLD (image-height TANK-BODY) (/ (image-height COMET) 2)) (posn-y (first comets)) HEIGHT-OF-WORLD))
+        	true
+        	(tankHit? tank (rest comets)))]))
+
+
+; struct -> IMAGE
+; creates game over text if a ufo has been grounded
+; (define (game-over g))
+(define (game-over g)
+  (place-image (text/font "GAME OVER" 60 "red"
+             #f 'modern 'normal 'bold #f)
+ (/ WIDTH-OF-WORLD 2) (* .35 HEIGHT-OF-WORLD) (renderTime (game-time g) G.O.BACKGROUND)))
+
+; list -> BOOLEAN
+; checkes whether any ufos have been grounded
+; (define (groudned u))
+(define (grounded? u)
+  (cond
+	[(empty? u) #false]
+	[else (if (>= (ufos-y (first u)) HEIGHT-OF-WORLD) true (grounded? (rest u)))]))
+
+; struct -> BOOLEAN
+; checks whether the program should end based on if the ufo has been grounded
+; (define (end? t))
+(define (end? t)
+  (cond
+    [(grounded? (game-ufos t)) true]
+    [else (tankHit? (game-tank t) (game-comets t))]))
+
+; struct -> big-bang
+; main function that initiates game
+; (define (main ws))
+(define (main ws)
+
+   (big-bang ws
+
+         	(on-tick update-game)
+
+         	(to-draw render)
+
+         	(on-key change)
+
+         	(stop-when end? game-over)))
+
+
+(main (make-game empty (make-tank (/ WIDTH-OF-WORLD 2) 10) empty empty 0))
+
+; The links below were used as inspiration for our code:
+; https://github.com/djhornsb/space-invaders/blob/master/space-invaders.rkt
+; https://github.com/emaphis/HtDP2e-solutions/blob/master/1-Fixed-Size-Data/6-Itemizations-Structures/06_01_space_invader_2.rkt
