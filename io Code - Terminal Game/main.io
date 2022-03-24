@@ -1,8 +1,9 @@
 # Run in the terminal:
-# io "C:\Users\sethb\OneDrive\Desktop\Sattler College\6. Spring 2021\CS 303 Programming Languages\Io language\animals.io"
+# io "path-to-main/main.io"
 
-Random #include lib to use List anyOne
+Random #include this lib to use List anyOne
 
+# Path to animals.io
 file := "Dekstop/io/animals.io"
 doFile(file)
 
