@@ -24,13 +24,13 @@ Check out my [code](https://github.com/sethbam9/Portfolio/blob/main/Io%20Code%20
 - If an object can’t respond to a message, it sends that message to its prototype.
 
 #### Sample Code
-Use a semi-colon after each item you want accomplished, unless that item is in parentheses, such as an if statement:
+Use a semicolon after each item you want accomplished, unless that item is in parentheses, such as an if statement:
 ```
 my_method := method(input, // what you pass in
 	"Hello world" println; // item 1
 	for (i, 0, input, // item 3 -- 0 is the start & input is the end of the loop.
 		mult := i*5;
-		mult println) // here we don't need a semi-colon
+		mult println) // here we don't need a semicolon
 	return "Thanks for using my method" println // item 4
 )
 ```
