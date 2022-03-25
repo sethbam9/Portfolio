@@ -11,7 +11,7 @@ I am a passionate computer science student. I love to learn and to create. As pa
 ## Passion Projects
 
 ### Computer Science Capstone: [A Hebrew Literacy App](https://github.com/sethbam9/Hebrew-Literacy-App)
-I've always enjoyed languages (e.g., Kiswahili, Greek, Hebrew) and am a person who pays close attention to detail. I'm therefore intrigued by the fields of computational lingustics and NLP. For my capstone I am combining a huge amount of backend development in Python and app development in Flutter to produce a mobile app that will empower students of ancient Hebrew to increase their literacy. My deliverable will be an functional app prototype in May. I however plan to continue my work on it after graduation and to publish it on the app store. 
+I've always enjoyed languages (e.g., Kiswahili, Greek, Hebrew) and am a person who pays close attention to detail. I'm therefore intrigued by the fields of computational lingustics and NLP. For my capstone I am combining a substantial amount of backend development in Python and app development in Flutter to produce a mobile app that will empower students of ancient Hebrew to increase their literacy. My deliverable will be a functional app prototype in May, 2022. I plan to continue my work on the app after graduation and to publish it in the app store. 
 
 ### Community Service / Coding for Social Good
 Since beginning my CS studies, I've been intentional about using code for the good of others during my spare time. This has included tasks like helping people with website development/hosting. 
