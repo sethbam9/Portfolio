@@ -3,7 +3,7 @@
 
      ;Data description:
 
-          ;Numbers represent coodinates and pixels
+          ;Numbers represent coordinates and pixels
                ;Pixels represent speed of objects
                     ;example: measures the speed of tank, ufos, missiles, and comets
                ;Coordinates represent locations
