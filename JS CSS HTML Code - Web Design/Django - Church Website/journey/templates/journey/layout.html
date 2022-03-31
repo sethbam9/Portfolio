@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Journey Christian Church</title>
+        <!-- Icon for the church -->
+        <link rel="icon" type="image/png" href="{% static 'journey/logo/favicon.ico' %}"/>
+        <!-- Style sheets -->
+        <link rel="bootstrap stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="general stylesheet" type="text/css" href="{% static 'journey/styles.css' %}"/>
+        <link rel="navbar stylesheet" type="text/css" href="{% static 'journey/navbar.css' %}"/>
+
+
+    </head>
+    <body>
+
+        <!-- Navbar Source: https://codepen.io/albizan/pen/mMWdWZ -->
+        <nav class="nav">
+            <div class="container">
+                <div class="logo">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'journey/logo/logo-text.png' %}" alt="logo">
+                    </a>
+                </div>
+                <div id="mainListDiv" class="main_list">
+                    <ul class="navlinks main_items">
+                        <li><a class="outer" href="{% url 'home' %}">Home</a></li>
+                        <li><div class="dropdown">
+                            <a class="outer" href="{% url 'about' %}">About</a>
+                            <div class="dropdown-content">
+                                <a class="sublist" href="{% url 'values' %}">Core Values</a>
+                                <a class="sublist" href="{% url 'our_team' %}">Our Team</a>
+                                <a class="sublist" href="{% url 'beliefs' %}">Beliefs</a>
+                            </div>
+                        </div></li>
+                        <li><div class="dropdown">
+                            <a class="outer" href="{% url 'outreach' %}">Outreach</a>
+                            <div class="dropdown-content">
+                                <a class="sublist" href="#">Medical Clinic</a>
+                                <a class="sublist" href="#">Tutoring</a>
+                            </div>
+                        </div></li>
+                        <li><a class="outer" href="{% url 'blog' %}">Blog</a></li>
+                        <li><a class="outer" href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <span class="navTrigger">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+
+            </div>
+        </nav>
+
+        {% block body %}
+        {% endblock %}
+
+        <div class="container bottom-div mt-5">
+          <div class="row">
+              <div class="col-12 mt-3">
+                <h5>Phone: 000-000-0000</h5>
+              </div>
+              <div class="col-12 mt-2">
+                <h5>Address: 200 Some Rd, Lake Charles, Louisiana</h5>
+              </div>
+              <div class="col-12 mt-2">
+                <h5>Email: email@email.com</h5>
+              </div>
+              <div class="col-12 mt-2">
+                <a href="https://www.facebook.com/JourneySWLA/">
+                  <i class="fa fa-facebook-official"></i>
+                </a>
+              </div>
+          </div>
+        </div>
+
+        <!-- Jquery needed -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="{% static 'journey/navbar.js' %}"></script>
+
+        <!-- Function used to shrink nav bar removing paddings and adding black background -->
+        <script>
+            $(window).scroll(function() {
+                if ($(document).scrollTop() > 50) {
+                    $('.nav').addClass('affix');
+                    console.log("OK");
+                } else {
+                    $('.nav').removeClass('affix');
+                }
+            });
+        </script>
+
+        <!-- JavaScript -->
+        <script rel="bootstrap script" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+        <script rel="general script" src="{% static 'journey/script.js' %}"></script>
+
+    </body>
+</html>

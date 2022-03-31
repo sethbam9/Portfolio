@@ -1,0 +1,115 @@
+.main-wrapper, .home-wrapper {
+  height: 100vh;
+}
+
+#welcome-banner {
+    height: 100%;
+    background-image: url("https://media.thegospelcoalition.org/wp-content/uploads/2019/06/04155216/church-family-1920x820.jpg");
+    background-size: cover;
+}
+
+#welcome-banner div {
+  background-color: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  color: white;
+  height: auto;
+  z-index: 0;
+}
+
+/* Subscribe Modal */
+/* Blog page */
+.banner {
+  width: auto;
+  height: 75vh;
+}
+
+.banner div {
+  color: white;
+}
+
+#blog-banner {
+  background: url("https://freedesignfile.com/upload/2018/02/Library-ancient-books-Stock-Photo-04.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+#outreach-banner {
+  background: url("https://www.niche.com/blog/wp-content/uploads/2019/01/importance-of-community-service-1200-1200x794.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.home-values img {
+  object-fit: cover;
+  height: 200px;
+  width: 200px;
+}
+.blog-container {
+  margin-bottom: 30px;
+}
+
+.blog-container a {
+  text-decoration: none;
+  color: black;
+}
+
+.blog-container a:hover {
+  color: gray;
+}
+
+.inner-left {}
+
+.inner-right {}
+
+.blog-img {
+  object-fit: cover;
+  height: 150px;
+  width: 150px;
+}
+
+.blog-posts {
+  outline: 1px solid black;
+  padding: 10px;
+}
+
+.blog-posts a {
+  text-decoration: none;
+  color: black;
+}
+
+.blog-posts a:hover {
+  text-decoration: none;
+  color: gray;
+}
+
+.bottom-div {
+  height: 200px;
+}
+
+.bottom-div i {
+  font-size:48px;
+  color:black;
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 768px) {
+  .inner-right {
+    margin-top: 10px;
+  }
+  .blog-posts {
+    margin-top: 20px;
+  }
+  .blog-img, .home-values img {
+    height: 300px;
+    width: 300px;
+  }
+  .home-wrapper {
+    margin-top: 50px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .blog-img {
+    height: 90vw;
+    width: 90vw;
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Wordle Helper</title>
+    <meta name="description" content="Wordle Helper">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <link rel='stylesheet' href='style.css'/>
+		
+</head>
+
+<body>
+  <div id='center-column' class="center-screen">
+    <form class="text">
+      <label><h3>Target Word</h3></label>
+      <input type="text" id="target-word"><br><br>
+      <input type="button" id="submit-target-word" value="Save"><br><br>
+    </form>
+    <div id='guesses'>
+    </div>
+      <div class="row">
+        <button type="button" id="enter-button">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front text">Submit</span>
+        </button>
+      </div>
+  </div>
+  <script src='script.js'></script>
+</body>
+</html>

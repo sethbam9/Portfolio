@@ -1,0 +1,32 @@
+{% extends "journey/layout.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div id="outreach-banner" class="row banner justify-content-center align-items-center">
+        <div class="col-auto">
+            <h1 class="display-1">Core Values</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    {% for value in values %}
+    <div class="row justify-content-center mb-2">
+      <div class="col-auto">
+        <h1>{{ value.name }}</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center mb-2">
+      <div class="col-auto">
+        <iframe src="https://www.youtube.com/embed/NpEaa2P7qZI" width="560" height="315" frameborder="0" allowfullscreen>></iframe>
+      </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+      <div class="col-6">
+        <h5 class="text-secondary">{{ value.content }}</h5>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

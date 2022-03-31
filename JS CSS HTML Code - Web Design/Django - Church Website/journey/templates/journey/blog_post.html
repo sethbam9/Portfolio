@@ -1,0 +1,31 @@
+{% extends "journey/layout.html" %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div id="blog-banner" class="row banner justify-content-center align-items-center">
+            <div class="col-auto">
+                <h1 class="display-1">Blog</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <h1 class="text-center">{{ blog_post.title }}</h1>
+            <div class="col-12 mt-2">
+                <p>By <a href="{% url 'blog' %}">{{ blog_post.author }}</a> on {{ blog_post.written_on }}<p>
+            </div>
+            <div class="col-12 mt-4">
+                {{blog_post.content}}
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+
+
+
+
+
+{% endblock %}

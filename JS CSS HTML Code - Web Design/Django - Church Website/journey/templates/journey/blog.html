@@ -1,0 +1,89 @@
+{% extends "journey/layout.html" %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div id="blog-banner" class="row banner justify-content-center align-items-center">
+            <div class="col-auto">
+                <h1 class="display-1">Blog</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-lg-8">
+
+                {% for post in page %}
+                <div class="row blog-container">
+                    <div class="col-md-auto inner-left">
+                        <img class="blog-img" src="{{ post.image.url }}">
+                    </div>
+                    <div class="col inner-right">
+                        <a href="{% url 'blog_post' post.title %}"><h5>{{ post.title }}</h5></a>
+                        <p>By <a href="{% url 'blog' %}">{{ post.author }}</a> on {{ post.written_on }}<p>
+                        <p>{{ post.content|slice:"0:150"}}...</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <!-- Bootstrap pagination - code idea from Vlad's section -->
+                <nav aria-label="...">
+                    <ul class="pagination">
+
+                      <!-- Previous page button -->
+                      {% if page.has_previous %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+                      </li>
+                      {% endif %}
+
+                      <!-- Current page numnber -->
+                      {% if page.has_next %}
+                      <li class="page-item active" aria-current="page">
+                        <span class="page-link">
+                          {{page.number}}
+                          <span class="sr-only"></span>
+                        </span>
+                      </li>
+
+                      <!-- Next page button -->
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+                      </li>
+                      {% endif %}
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+                <div class="blog-posts">
+                    <ul class="list-unstyled">
+                        <li><a href="#"><h5>Popular Posts</h5></a></li>
+                        {% for post in most_viewed|slice:":3" %}
+                            <li><a href="{% url 'blog_post' post %}">{{ post.title }} ({{ post.views }})</a></li>
+                        {% endfor %}
+                        <hr>
+                        <li><a href="#"><h5>Categories</h5></a></li>
+                        {% for category in categories|slice:":10" %}
+                            <li><a href="{% url 'blog' %}">{{ category.category }}</a></li>
+                        {% endfor %}
+                        <li>...</li>
+                        <hr>
+                        <li><a href="#"><h5>Authors</h5></a></li>
+                        {% for author in authors|slice:":10" %}
+                            <li><a href="{% url 'blog' %}">{{ author.author }}</a></li>
+                        {% endfor %}
+                        <li>...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

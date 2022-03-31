@@ -1,0 +1,29 @@
+{% extends "journey/layout.html" %}
+
+{% block body %}
+
+    <div class="main-wrapper container-fluid">
+        <div id="welcome-banner" class="row justify-content-center align-items-center">
+            <div class="col-sm-4">
+                <h1 class="p-2">Welcom to Journey Christian Church!</h1>
+                <hr class=style="width:75%; border-top: 2px solid white;">
+                <p class="p-2">When’s the last time someone asked you what you believe? You know—about the big things in life. We’re a church that loves to ask questions, and loves people with questions. We don’t have all the answers, but exploring together is pretty much our favourite thing.</p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container home-wrapper home-values d-flex align-items-center">
+        <div class="row">
+            <h1 class="text-center mb-5">Our Core Values</h1>
+            {% for value in values %}
+            <div class="col-lg-3 p-3">
+                <img class="mb-3" src="{{ value.image.url }}">
+                <h4 class="mb-3">{{value.name}}</h4>
+                {{value.content|slice:"0:100"}}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
