@@ -8,6 +8,7 @@ const lettersNotInWord = new Set();
 let words = [];
 let currentRow = 0;
 let targetWord = "";
+let startWord = "";
 
 // Universal key listener
 document.addEventListener('keyup', (e) =>
@@ -105,19 +106,11 @@ function addGuess(word) {
   currentRow++;
 }
 
-createGrid();
-
-addGuess('SALET');
-
 async function fetchWords(file) {
   let response = await fetch(file);
   let data = await response.text();
   return data.split('\n');
 }
-
-fetchWords('words.txt').then(downloadedWords => {
-  words = downloadedWords;
-});
 
 // Checks dictionary for words that meet criteria
 function isValidWord(word) {
@@ -147,6 +140,9 @@ function isValidWord(word) {
     }
     // grey (0) = this letter is not in the word
     if (cell.colorIndex == 0) {
+      if (word[i] == letter) {
+        return false;
+      }
       if (!checkInWord(i, letter)) {
         lettersNotInWord.add(letter)
         if (word.includes(letter) || word[i] == letter) {
@@ -186,4 +182,15 @@ function addNextGuess() {
   }
 }
 
+function mainFunction() {
+  createGrid();
+  fetchWords('words.txt').then(downloadedWords => {
+    words = downloadedWords;
+  }).then(() => {
+    startWord = words[Math.floor(Math.random()*words.length)];
+  }).then(() => {
+    addGuess(startWord.toUpperCase());
+  });
+}
 
+mainFunction();
