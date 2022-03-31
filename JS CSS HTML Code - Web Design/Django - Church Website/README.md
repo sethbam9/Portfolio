@@ -4,6 +4,9 @@ Charles, Louisiana. The aim is for the app to contain most of the standard
 components of a church website such as 'home', 'about', 'contact', and 'support'
 pages.
 
+## Demo
+<img src="https://github.com/sethbam9/Portfolio/blob/main/JS%20CSS%20HTML%20Code%20-%20Web%20Design/Django%20-%20Church%20Website/journey_demo.gif" width="750" height="400"/>
+
 ## PROJECT FILES
 
 ### Main Files (journeychurch/journeychurch/)
