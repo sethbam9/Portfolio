@@ -1,12 +1,12 @@
-PROJECT DESCRIPTION
+# PROJECT DESCRIPTION
 journeychurch is a web application for Journey Christian Church LA in Lake
 Charles, Louisiana. The aim is for the app to contain most of the standard
 components of a church website such as 'home', 'about', 'contact', and 'support'
 pages.
 
-PROJECT FILES
+## PROJECT FILES
 
-Main Files (journeychurch/journeychurch/)
+### Main Files (journeychurch/journeychurch/)
 
 * settings.py
   * add 'journey' to INSTALLED_APPS
@@ -22,7 +22,7 @@ Main Files (journeychurch/journeychurch/)
     media files in the form 'src="{{object.media_name.url}}"'.
 
 
-App Files (journeychurch/journey/)
+### App Files (journeychurch/journey/)
 * admin.py
 * models.py
   * Install Pillow for ImageField: https://pypi.org/project/Pillow/ (or run 'python -m pip install Pillow')
@@ -36,7 +36,7 @@ App Files (journeychurch/journey/)
 * urls.py
 * views.py
 
-Template Files (journeychurch/journey/templates/journey/)
+### Template Files (journeychurch/journey/templates/journey/)
   My design for the site was targeting simplicity and a clean layout.
   All of my html files have a an image at the top which is a placeholder. This allows
   the white navbar items to be seen and to provide an elegant look. I will highlight notable
@@ -45,7 +45,7 @@ Template Files (journeychurch/journey/templates/journey/)
 * index.html this is the landing page.
 
 
-Static Files (journeychurch/journey/static/journey/)
+### Static Files (journeychurch/journey/static/journey/)
 * styles.css
 * favicon.ico
   * This is the icon for journeychurch. The idea is from
